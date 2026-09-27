@@ -15,6 +15,9 @@
 # Usage:  ./install_mac.sh            full install
 #         ./install_mac.sh --no-voice skip backtalk's model download (add later)
 #         ./install_mac.sh --no-hands skip barehands
+#         ./install_mac.sh --pin      check out the exact upstream commits this
+#                                     bundle was validated against (30/08/2026)
+#                                     instead of the latest main
 #
 # Env overrides: AGENT_HOME (default ~/my-agent), VAULT_PATH (default ~/HQ)
 #
@@ -26,10 +29,12 @@ AGENT_HOME="${AGENT_HOME:-$HOME/my-agent}"
 VAULT_PATH="${VAULT_PATH:-$HOME/HQ}"
 WITH_VOICE=1
 WITH_HANDS=1
+PIN=0
 for a in "$@"; do
   case "$a" in
     --no-voice) WITH_VOICE=0 ;;
     --no-hands) WITH_HANDS=0 ;;
+    --pin)      PIN=1 ;;
     -h|--help) sed -n 2,20p "$0"; exit 0 ;;
   esac
 done
@@ -67,14 +72,29 @@ fi
 # ---------------------------------------------------------------- the repos
 say_step "Agent home: $AGENT_HOME"
 mkdir -p "$AGENT_HOME"
+# Upstream commits this bundle was read and tested against (all dated 30/08/2026).
+pinned_sha() {
+  case "$1" in
+    fullstack-agent)     echo 5bb159f47dbd6fa8f108651d0532a43aef16346b ;;
+    ai-memory-vault)     echo 659bba9c8b351c937dd393b3042801d1ff1b502c ;;
+    backtalk)            echo 84b3a6cd321060cabb74aad6ebe794621cf99bd3 ;;
+    ai-visualizer)       echo 6921e1d ;;
+    barehands)           echo eb23bed ;;
+    ai-marketing-skills) echo 47b68a5 ;;
+  esac
+}
 REPOS="fullstack-agent ai-memory-vault backtalk ai-visualizer"
 [ "$WITH_HANDS" = 1 ] && REPOS="$REPOS barehands"
+REPOS="$REPOS ai-marketing-skills"
 for r in $REPOS; do
   if [ -d "$AGENT_HOME/$r/.git" ]; then
     note "$r: present"
   else
     note "$r: cloning"
     git clone -q "https://github.com/jaredrhod/$r" "$AGENT_HOME/$r"
+    if [ "$PIN" = 1 ]; then
+      git -C "$AGENT_HOME/$r" checkout -q "$(pinned_sha "$r")" && note "$r: pinned to validated commit"
+    fi
   fi
 done
 
@@ -121,6 +141,31 @@ else
   (cd "$HERE/vault" && find . -type d -exec mkdir -p "$VAULT_PATH/{}" \;)
   (cd "$HERE/vault" && find . -type f | while IFS= read -r f; do fill "$f" "$VAULT_PATH/$f"; done)
   note "seeded: index, priorities, 8 folders, starter Jobs"
+fi
+
+# ---------------------------------------------------------------- marketing playbook
+say_step "Marketing playbook (ai-marketing-skills)"
+MK_SRC="$AGENT_HOME/ai-marketing-skills/jaredrhod-marketing"
+MK_VAULT="$VAULT_PATH/07 - Resources/Marketing"
+if [ -d "$MK_SRC" ]; then
+  mkdir -p "$MK_VAULT"
+  n=0
+  for f in "$MK_SRC"/*.md; do
+    b="$(basename "$f")"
+    [ "$b" = "SKILL.md" ] && continue           # the index note replaces it in a vault
+    if [ ! -f "$MK_VAULT/$b" ]; then cp "$f" "$MK_VAULT/$b"; n=$((n+1)); fi
+  done
+  note "vault: $n playbook files added to 07 - Resources/Marketing (index note already there)"
+  SKILL_DIR="$HOME/.claude/skills/jaredrhod-marketing"
+  if [ ! -d "$SKILL_DIR" ]; then
+    mkdir -p "$HOME/.claude/skills"
+    cp -R "$MK_SRC" "$SKILL_DIR"
+    note "skill: installed at ~/.claude/skills/jaredrhod-marketing (every project)"
+  else
+    note "skill: present"
+  fi
+else
+  note "ai-marketing-skills not found; skipped"
 fi
 
 # ---------------------------------------------------------------- Obsidian

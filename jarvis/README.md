@@ -23,7 +23,8 @@ Jared's wizard normally interviews you for 10 to 15 minutes. This folder holds t
 - `home/ai-visualizer.json`: circuit board face, name JARVIS, bus pointed at backtalk.
 - `home/barehands.json`: the vault as the Notes orb.
 - `vault/`: seeded Obsidian vault. VAULT-INDEX with your profile, key people (Madi, Archie, Lucy), three business folders (Submission Labs, Trident Seas, Trident Maritime Academy), Personal, Archive, Resources, Active Priorities, daily note template, folder indexes, and five starter Jobs: WhatsApp Front Desk, Social Content, Course Pack Review, Bilingual Draft, plus a Writing Style Guide.
-- `install_mac.sh`: clones the five repos into `~/my-agent`, drops the files above in with real paths, creates the vault at `~/HQ`, installs Obsidian and registers the vault, runs backtalk's installer, writes Desktop shortcuts. Idempotent. Never overwrites anything that already exists.
+- `vault/07 - Resources/Marketing/` and `Integrations Plan.md`: Jared's marketing playbook wired in as AI Priming (the agent reads the principles before any marketing work), and a phased plan for connecting Calendar, Gmail, WhatsApp, Metricool and the website the way Jared connects his services: read-only first, ask-first permissions, one policy note per service.
+- `install_mac.sh`: clones the six repos into `~/my-agent`, drops the files above in with real paths, creates the vault at `~/HQ`, installs Obsidian and registers the vault, runs backtalk's installer, writes Desktop shortcuts. Idempotent. Never overwrites anything that already exists.
 
 ## Install on the Mac mini
 
@@ -37,7 +38,7 @@ cd jarvis
 ./install_mac.sh
 ```
 
-Flags: `--no-voice` skips the 1 GB speech-model download (run backtalk's `install.sh` later). `--no-hands` skips barehands. Override locations with `AGENT_HOME=... VAULT_PATH=... ./install_mac.sh`.
+Flags: `--no-voice` skips the 1 GB speech-model download (run backtalk's `install.sh` later). `--no-hands` skips barehands. `--pin` checks out the exact upstream commits this bundle was validated against instead of latest main (then `Update Jarvis` will not fast-forward until you `git checkout main` in each repo). Override locations with `AGENT_HOME=... VAULT_PATH=... ./install_mac.sh`.
 
 Roughly 10 minutes, most of it the model download.
 
@@ -72,6 +73,41 @@ Desktop shortcuts written: Chat with Jarvis, Talk to Jarvis, Jarvis barehands, U
   barehands/           hands; barehands.json (from home/)
 ~/HQ/                  the vault (from vault/)
 ```
+
+## Version check and research (27/09/2026)
+
+YouTube and Jared's site and Substack are blocked from the build environment, so this was done from his GitHub account (seven public repos, full commit history), web search results, and third-party write-ups. Findings:
+
+**The correct version is upstream `main` as of 30/08/2026.** The tour video (FiOTrxq9ckM) was added to the fullstack-agent README on 20/08/2026. Every repo received fixes after that, through 30/08/2026, and nothing has changed since. The installer pulls `main`, so you get all of them. Validated commits: fullstack-agent `5bb159f`, ai-memory-vault `659bba9`, backtalk `84b3a6c`, ai-visualizer `6921e1d`, barehands `eb23bed`, ai-marketing-skills `47b68a5`.
+
+**What changed after the video, and is in this bundle:**
+
+- backtalk: speech recognition on the Apple Silicon GPU via mlx-whisper (0.88 s to 0.12 s per transcript on Jared's M4). Relevant to the Mac mini.
+- backtalk: never reads file paths aloud; recovers the mic when a headset connects or disconnects; `mic_device` pins the microphone by name; `show_usage` can draw plan usage on the face; `visible_skills` hides skill descriptions on a shared screen; `BACKTALK_CONFIG` runs a second agent from the same install; `discipline_append` adds your own spoken-delivery rules.
+- ai-visualizer: plan usage rows on every face; board F key fullscreen; Space key cinematic flythrough.
+- barehands: `present` verb (show-me lands centre stage), positioned cards, Props folder anywhere.
+- ai-memory-vault: fresh vault goes in the home folder (not Documents or iCloud, which macOS sandboxes for background work); the Obsidian registration step was hardened after it corrupted a user's config; the Claude Code memory redirect now names the right project folder.
+- fullstack-agent: Update shortcut, incoming changelog on update, Obsidian never optional, interview covers mic mode, permission mode and voice engine.
+
+**Retired:** the `prompts` repo (voice-line, visualizer, cinematic camera prompts) is marked retired by Jared. Do not use it; the repos replaced it.
+
+**Upgrades applied here beyond the stock install:**
+
+- `ai-marketing-skills` installed both ways Jared recommends: as vault files under `07 - Resources/Marketing` with the index note, and as a Claude Code skill at `~/.claude/skills/jaredrhod-marketing`. His wizard offers this at the end of every install.
+- `discipline_append` in backtalk carries your spoken rules (no filler, Spain time, English then Spanish, no Trident Maritime Academy accreditations).
+- ElevenLabs block pre-written and disabled, with the voice name from the videos (Tarquin) noted so nobody hunts for it.
+- Integrations Plan note modelled on how Jared runs his: a dedicated Mac on 24/7, its own email and phone number, four inboxes each with a written policy, membership platform monitoring, newsletter auto-unsubscribe, a phone line answered in a British butler voice (Substack, "Six Weeks With Jarvis", 07/2026). Your equivalents are listed in priority order.
+
+**Available, not switched on (your call, one line each to Jarvis):**
+
+- ElevenLabs voice. Free tier auditions it; daily use is the paid starter plan. Needs `ffmpeg`.
+- Hands-free microphone (`mic_mode: open`). Room audio and speakers can trigger it; headphones recommended.
+- Auto-approve permissions (`bypassPermissions`). Faster, no checkpoint on a mistake. Jared's default is ask.
+- `resume_last_session: true` so the morning voice session remembers last night.
+- `show_usage: true` to draw your plan usage on the circuit board.
+- Deep model for the voice line. Jared pins the fast tier on purpose; use "switch to the deep model" per session instead.
+
+**Sources:** github.com/jaredrhod (all repos and commit logs), https://jaredrhod.substack.com/p/six-weeks-with-jarvis , https://jaredrhod.substack.com/p/how-to-make-a-jarvis , https://www.youtube.com/watch?v=6Tb41ORADgs (visualizer demo), https://youtu.be/cV02finVi4o (barehands demo), playlists How To Build A Jarvis https://youtube.com/playlist?list=PLPv0hMv8Uwt4 and The AI Marketing Machine https://youtube.com/playlist?list=PLdNHCeiXnovo , memory vault walkthrough https://www.youtube.com/playlist?list=PLN7lTYpeRLOc . Jared's own tip: give Claude Code any of his video links and it can read the transcript.
 
 ## Notes
 

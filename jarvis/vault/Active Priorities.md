@@ -12,4 +12,6 @@ The single queue of open work across everything. Tag each item with its project 
 - [ ] Fill in the thin sections of this vault: current members and class timetable (submission-labs), current contracts (trident-seas), course calendar (trident-maritime-academy).
 - [ ] Add the co-parenting schedule to [[Family Schedule]] so handovers are never guessed. (personal)
 
+- [ ] Work [[Integrations Plan]] Phase 1: Calendar and Gmail read-only through Claude Code MCP. (meta)
+
 ### Completed Tasks

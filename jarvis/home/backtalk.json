@@ -4,11 +4,21 @@
   "greeting": "Hello James, what are we working on today?",
   "ptt_key": "home",
   "mic_mode": "ptt",
+  "mic_device": "",
   "permission_mode": "ask",
   "voice": "bm_lewis",
   "speed": 1.05,
   "stt_model": "small.en",
-  "extra_dirs": ["__VAULT_PATH__"],
+  "extra_dirs": [
+    "__VAULT_PATH__"
+  ],
   "barehands_state_dir": "__AGENT_HOME__/barehands/state",
-  "resume_last_session": false
+  "resume_last_session": false,
+  "show_usage": false,
+  "discipline_append": "James's spoken rules: no greetings or sign-offs, answer then stop. Times in Spain time, twenty-four hour clock, dates as day month year. If he asks for Spanish, say the English first, then formal European Spanish. Never name specific accreditations for Trident Maritime Academy.",
+  "elevenlabs": {
+    "enabled": false,
+    "voice_id": "",
+    "voice_note": "Tarquin is the voice from Jared's videos: search it by name in the ElevenLabs library, paste its voice_id here, set enabled true, keep the key in the macOS Keychain item backtalk-elevenlabs"
+  }
 }

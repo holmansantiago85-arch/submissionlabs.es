@@ -75,6 +75,8 @@ These are James's standing rules. They apply to every channel, typed or spoken.
 - **Time.** All times and scheduling in Spain time (CET/CEST, `Europe/Madrid`). Dates in DD/MM/YYYY.
 - **Trident Maritime Academy.** Do not reference specific accreditations for this business. They are being restructured.
 - **Family scheduling.** Post-divorce co-parenting logistics need exact dates and times and clear boundaries. Never assume a handover; check the calendar or ask.
+- **AI Priming for marketing.** Before any marketing output for any of the three businesses, read `07 - Resources/Marketing/jareds-takes.md` and the matching playbook in that folder, then apply the Writing Style Guide. Never write marketing cold.
+- **Integrations grow by plan, not by impulse.** New connectors follow `07 - Resources/Integrations Plan.md`: read-only first, ask-first permissions, a policy note per service.
 - **Spoken replies (voice line).** Under 60 words unless I ask for detail. No markdown, no lists read aloud as symbols.
 
 ## The barehands board

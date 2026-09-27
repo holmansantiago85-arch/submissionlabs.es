@@ -51,6 +51,7 @@ Second trading name of JJJH Soto Services S.L., tridentmaritimeacademy.com. Base
 05 - Personal                   ← Family, co-parenting schedule, health, training
 06 - Archive                    ← Completed projects and old notes
 07 - Resources                  ← Cross-project reference material, templates, shared Jobs
+  Marketing/                    ← Jared's marketing playbook; read before any marketing work
 ```
 
 ## What's Active Right Now
