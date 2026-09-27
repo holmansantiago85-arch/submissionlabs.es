@@ -1,0 +1,14 @@
+{
+  "agent_dir": "__AGENT_HOME__",
+  "name": "Jarvis",
+  "greeting": "Hello James, what are we working on today?",
+  "ptt_key": "home",
+  "mic_mode": "ptt",
+  "permission_mode": "ask",
+  "voice": "bm_lewis",
+  "speed": 1.05,
+  "stt_model": "small.en",
+  "extra_dirs": ["__VAULT_PATH__"],
+  "barehands_state_dir": "__AGENT_HOME__/barehands/state",
+  "resume_last_session": false
+}
