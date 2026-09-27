@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Runs Jarvis in wake-word voice mode at login and restarts it if it dies.
+  Install:
+    sed "s#__JARVIS_DIR__#$PWD#g" launchd/com.jarvis.assistant.plist > ~/Library/LaunchAgents/com.jarvis.assistant.plist
+    launchctl load ~/Library/LaunchAgents/com.jarvis.assistant.plist
+  Remove:
+    launchctl unload ~/Library/LaunchAgents/com.jarvis.assistant.plist
+-->
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.jarvis.assistant</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>__JARVIS_DIR__/.venv/bin/jarvis</string>
+        <string>voice</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>__JARVIS_DIR__</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>__JARVIS_DIR__/logs/jarvis.out.log</string>
+    <key>StandardErrorPath</key>
+    <string>__JARVIS_DIR__/logs/jarvis.err.log</string>
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin</string>
+    </dict>
+</dict>
+</plist>
