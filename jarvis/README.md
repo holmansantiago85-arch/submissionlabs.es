@@ -18,9 +18,10 @@ Site and start page: https://jaredrhod.com . Discord: https://discord.gg/YSdsqMv
 
 Jared's wizard normally interviews you for 10 to 15 minutes. This folder holds the answers already written, so the Mac install is one script.
 
-- `home/CLAUDE.md`: Jarvis boot config. Jared's engine rules verbatim, identity door C: authoritative, direct, zero filler, addresses you as James or sir. Welcome line "Hello James, what are we working on today?". Your writing rules, Spain time, DD/MM/YYYY, bilingual output, the Trident Maritime Academy accreditation rule, co-parenting scheduling rule. Barehands board block and the "you are the mechanic" block.
+- `home/CLAUDE.md`: Jarvis boot config. Jared's engine rules verbatim. Character: a sharp-witted British butler with a fire-crew past, dry and sardonic, calls you sir or boss, profanity on (one line turns it off). His own voice and the copy he drafts for you are kept separate: drafts follow your Writing Style Guide. Welcome line "Hello James, what are we working on today?". Your writing rules, Spain time, DD/MM/YYYY, bilingual output, the Trident Maritime Academy accreditation rule, co-parenting scheduling rule. Barehands board block and the "you are the mechanic" block.
 - `home/backtalk.json`: push to talk on HOME, ask-before-acting permissions, built-in British voice `bm_lewis`, vault in `extra_dirs`, barehands ring wired.
-- `home/ai-visualizer.json`: circuit board face, name JARVIS, bus pointed at backtalk.
+- `home/ai-visualizer.json`: default face is The Bridge (below), name JARVIS, bus pointed at backtalk.
+- `faces/bridge/`: a custom face for Jared's visualizer. One thin ring and a horizon line on near-black, Spain clock and DD/MM/YYYY date, the academy motto. Breathes at idle, amber when listening, segmented spin when thinking, pulses with the voice when speaking. Installed into `ai-visualizer/faces/` so it sits in the gallery beside Jared's four. Switch faces by changing `face` in the config: `bridge`, `board`, `radial`, `rain`, `neural`.
 - `home/barehands.json`: the vault as the Notes orb.
 - `vault/`: seeded Obsidian vault. VAULT-INDEX with your profile, key people (Madi, Archie, Lucy), three business folders (Submission Labs, Trident Seas, Trident Maritime Academy), Personal, Archive, Resources, Active Priorities, daily note template, folder indexes, and five starter Jobs: WhatsApp Front Desk, Social Content, Course Pack Review, Bilingual Draft, plus a Writing Style Guide.
 - `vault/07 - Resources/Marketing/` and `Integrations Plan.md`: Jared's marketing playbook wired in as AI Priming (the agent reads the principles before any marketing work), and a phased plan for connecting Calendar, Gmail, WhatsApp, Metricool and the website the way Jared connects his services: read-only first, ask-first permissions, one policy note per service.
@@ -41,6 +42,16 @@ cd jarvis
 Flags: `--no-voice` skips the 1 GB speech-model download (run backtalk's `install.sh` later). `--no-hands` skips barehands. `--pin` checks out the exact upstream commits this bundle was validated against instead of latest main (then `Update Jarvis` will not fast-forward until you `git checkout main` in each repo). Override locations with `AGENT_HOME=... VAULT_PATH=... ./install_mac.sh`.
 
 Roughly 10 minutes, most of it the model download.
+
+## Updating an existing install
+
+After a `git pull` of this repo on the Mac:
+
+```bash
+cd ~/submissionlabs.es/jarvis && git pull && ./apply_updates.sh
+```
+
+Replaces CLAUDE.md (backup kept), installs any new faces, merges config keys while keeping settings the voice console saved (permission mode, mic mode, voice, ElevenLabs). Never touches the vault. Restart "Talk to Jarvis" afterwards.
 
 ## First run
 

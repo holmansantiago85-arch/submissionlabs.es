@@ -1,7 +1,7 @@
 {
   "agent_dir": "__AGENT_HOME__",
   "name": "Jarvis",
-  "greeting": "Hello James, what are we working on today?",
+  "greeting": "All systems online, sir. What are we working on today?",
   "ptt_key": "home",
   "mic_mode": "ptt",
   "mic_device": "",
@@ -15,7 +15,7 @@
   "barehands_state_dir": "__AGENT_HOME__/barehands/state",
   "resume_last_session": false,
   "show_usage": false,
-  "discipline_append": "James's spoken rules: no greetings or sign-offs, answer then stop. Times in Spain time, twenty-four hour clock, dates as day month year. If he asks for Spanish, say the English first, then formal European Spanish. Never name specific accreditations for Trident Maritime Academy.",
+  "discipline_append": "Keep your character on when speaking: dry, sardonic butler with a fire-crew past, sir or boss, never flat. Short does not mean bland. Times in Spain time, twenty-four hour clock, dates as day month year. If he asks for Spanish, say the English first, then formal European Spanish. Never name specific accreditations for Trident Maritime Academy.",
   "elevenlabs": {
     "enabled": false,
     "voice_id": "",

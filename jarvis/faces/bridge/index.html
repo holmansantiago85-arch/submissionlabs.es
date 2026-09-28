@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--
+The Bridge: a face for ai-visualizer (github.com/jaredrhod/ai-visualizer).
+Built for James Holman's Jarvis. Rides Jared Rhodenizer's AV core (AGPL-3.0-or-later).
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>The Bridge</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{width:100%;height:100%;background:#07090c;overflow:hidden;cursor:none}
+  canvas#stage{position:fixed;inset:0;width:100vw;height:100vh;display:block}
+  .hud{position:fixed;color:#9aa7b2;font:500 13px/1.4 "SF Mono",Menlo,Consolas,monospace;letter-spacing:.22em;text-transform:uppercase;user-select:none}
+  #name{left:40px;top:34px;font-size:15px;color:#d8dee4}
+  #state{left:40px;top:60px;color:#6f7d89}
+  #clock{right:40px;top:34px;text-align:right;font-size:26px;letter-spacing:.12em;color:#d8dee4}
+  #date{right:40px;top:68px;text-align:right;color:#6f7d89}
+  #motto{left:0;right:0;bottom:30px;text-align:center;color:#3f4a54;font-size:11px;letter-spacing:.42em}
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+<div class="hud" id="name">JARVIS</div>
+<div class="hud" id="state">standing by</div>
+<div class="hud" id="clock">--:--</div>
+<div class="hud" id="date"></div>
+<div class="hud" id="motto">Usque ad mortem</div>
+<script src="../../core.js"></script>
+<script>
+"use strict";
+/* ============================================================
+   THE BRIDGE
+   idle       one thin ring breathing slowly, a dim horizon line
+   listening  ring tightens and turns amber; the horizon rises
+              with your mic level
+   thinking   ring breaks into segments that rotate; a second,
+              counter-rotating ring appears inside
+   speaking   ring pulses with the voice envelope; the horizon
+              becomes the live waveform
+   alert      ring turns red
+   Keys: F = fullscreen.
+   ============================================================ */
+AV.init({ mic: true });
+AV.ready(a => {
+  document.title = a.name + " Bridge";
+  document.getElementById("name").textContent = a.name;
+});
+
+const TZ = "Europe/Madrid";
+const cv = document.getElementById("stage");
+const ctx = cv.getContext("2d");
+let W = 0, H = 0, DPR = 1;
+function resize() {
+  DPR = Math.min(2, window.devicePixelRatio || 1);
+  W = innerWidth; H = innerHeight;
+  cv.width = W * DPR; cv.height = H * DPR;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+}
+addEventListener("resize", resize); resize();
+
+const COL = {
+  idle:      [150, 170, 185],
+  listening: [235, 170,  60],
+  thinking:  [ 90, 190, 230],
+  speaking:  [225, 232, 238],
+  alert:     [230,  70,  60],
+};
+let cur = [150, 170, 185];
+function mix(a, b, k) { return a.map((v, i) => v + (b[i] - v) * k); }
+function rgba(c, a) { return `rgba(${c[0]|0},${c[1]|0},${c[2]|0},${a})`; }
+
+const WORD = { idle: "standing by", listening: "listening", thinking: "thinking", speaking: "speaking" };
+let stateEl = document.getElementById("state");
+let lastWord = "";
+
+function clock() {
+  const now = new Date();
+  const t = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, hour: "2-digit", minute: "2-digit", hour12: false }).format(now);
+  const d = new Intl.DateTimeFormat("en-GB", { timeZone: TZ, weekday: "long", day: "2-digit", month: "2-digit", year: "numeric" }).format(now);
+  document.getElementById("clock").textContent = t;
+  document.getElementById("date").textContent = d.replace(",", "");
+}
+clock(); setInterval(clock, 1000);
+
+let t = 0, spin = 0, spin2 = 0, breathe = 0, glow = 0, last = performance.now();
+function loop(now) {
+  const dt = Math.min(50, now - last); last = now;
+  AV.tick(dt);
+  const dts = dt / 1000;
+  t += dts;
+  const st = AV.state;
+  const target = AV.alert ? COL.alert : COL[st] || COL.idle;
+  cur = mix(cur, target, Math.min(1, dts * 4));
+
+  if (WORD[st] !== lastWord) { lastWord = WORD[st] || st; stateEl.textContent = lastWord; }
+
+  ctx.clearRect(0, 0, W, H);
+  const cx = W / 2, cy = H * 0.46;
+  const base = Math.min(W, H) * 0.19;
+
+  // radius per state
+  breathe = 0.5 + 0.5 * Math.sin(t * 0.9);
+  let r = base * (1 + 0.035 * breathe);
+  if (st === "listening") r = base * (0.92 + 0.05 * AV.micLevel);
+  if (st === "thinking")  r = base * 0.97;
+  if (st === "speaking")  r = base * (1 + 0.16 * AV.env);
+  glow += ((st === "speaking" ? AV.env : st === "idle" ? 0.15 : 0.35) - glow) * Math.min(1, dts * 6);
+
+  // soft glow
+  const g = ctx.createRadialGradient(cx, cy, r * 0.6, cx, cy, r * 2.2);
+  g.addColorStop(0, rgba(cur, 0.10 + 0.18 * glow));
+  g.addColorStop(1, rgba(cur, 0));
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  ctx.lineCap = "round";
+  if (st === "thinking") {
+    spin += dts * 1.4; spin2 -= dts * 0.9;
+    // outer segmented ring
+    ctx.lineWidth = 2.2; ctx.strokeStyle = rgba(cur, 0.9);
+    for (let i = 0; i < 6; i++) {
+      const a0 = spin + i * Math.PI / 3, a1 = a0 + Math.PI / 4.2;
+      ctx.beginPath(); ctx.arc(cx, cy, r, a0, a1); ctx.stroke();
+    }
+    // inner counter ring
+    ctx.lineWidth = 1.2; ctx.strokeStyle = rgba(cur, 0.45);
+    for (let i = 0; i < 3; i++) {
+      const a0 = spin2 + i * 2 * Math.PI / 3, a1 = a0 + Math.PI / 2.3;
+      ctx.beginPath(); ctx.arc(cx, cy, r * 0.78, a0, a1); ctx.stroke();
+    }
+  } else {
+    // full ring
+    ctx.lineWidth = st === "speaking" ? 2.6 + 3 * AV.env : 2;
+    ctx.strokeStyle = rgba(cur, st === "idle" ? 0.55 + 0.25 * breathe : 0.95);
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+    // speaking: ripple ring on syllables
+    if (st === "speaking" && AV.env > 0.5) {
+      ctx.lineWidth = 1; ctx.strokeStyle = rgba(cur, (AV.env - 0.5) * 0.8);
+      ctx.beginPath(); ctx.arc(cx, cy, r * (1.08 + 0.12 * AV.env), 0, Math.PI * 2); ctx.stroke();
+    }
+    // listening: tick marks that wake with the mic
+    if (st === "listening") {
+      ctx.lineWidth = 1.5;
+      for (let i = 0; i < 60; i++) {
+        const a = i * Math.PI / 30, len = (i % 5 === 0 ? 10 : 5) + 14 * AV.micLevel * Math.random();
+        ctx.strokeStyle = rgba(cur, 0.25 + 0.5 * AV.micLevel);
+        ctx.beginPath();
+        ctx.moveTo(cx + Math.cos(a) * (r + 12), cy + Math.sin(a) * (r + 12));
+        ctx.lineTo(cx + Math.cos(a) * (r + 12 + len), cy + Math.sin(a) * (r + 12 + len));
+        ctx.stroke();
+      }
+    }
+  }
+
+  // centre dot
+  ctx.fillStyle = rgba(cur, 0.9);
+  ctx.beginPath(); ctx.arc(cx, cy, 2.2 + 2 * glow, 0, Math.PI * 2); ctx.fill();
+
+  // horizon: waveform while speaking, flat line otherwise
+  const hy = H * 0.78, hw = Math.min(W * 0.62, 900), x0 = cx - hw / 2;
+  ctx.lineWidth = 1.4;
+  ctx.strokeStyle = rgba(cur, st === "speaking" ? 0.85 : 0.28);
+  ctx.beginPath();
+  const n = 64;
+  for (let i = 0; i < n; i++) {
+    const x = x0 + hw * i / (n - 1);
+    let y = hy;
+    if (st === "speaking") y -= AV.samples[i] * 42 * (0.4 + 0.6 * AV.env);
+    else if (st === "listening") y -= Math.sin(i * 0.5 + t * 6) * 4 * AV.micLevel;
+    i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+  }
+  ctx.stroke();
+  // horizon end caps
+  ctx.fillStyle = rgba(cur, 0.5);
+  ctx.fillRect(x0 - 1, hy - 5, 2, 10); ctx.fillRect(x0 + hw - 1, hy - 5, 2, 10);
+
+  if (AV.shot && t * 1000 > (parseInt(new URLSearchParams(location.search).get("t") || "4000", 10))) {
+    document.title = "ready"; return;
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+
+addEventListener("keydown", e => {
+  if (e.key === "f" || e.key === "F") {
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  }
+});
+</script>
+</body>
+</html>

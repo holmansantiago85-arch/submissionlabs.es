@@ -123,6 +123,10 @@ put_cfg() {  # put_cfg <repo> <file>
 }
 put_cfg backtalk backtalk.json
 put_cfg ai-visualizer ai-visualizer.json
+for f in "$HERE"/faces/*/; do
+  n="$(basename "$f")"
+  [ -d "$AGENT_HOME/ai-visualizer/faces/$n" ] || { cp -R "$f" "$AGENT_HOME/ai-visualizer/faces/$n"; note "face installed: $n"; }
+done
 [ "$WITH_HANDS" = 1 ] && put_cfg barehands barehands.json
 if [ "$WITH_HANDS" = 0 ] && [ -f "$AGENT_HOME/backtalk/backtalk.json" ]; then
   python3 - "$AGENT_HOME/backtalk/backtalk.json" <<'PY'

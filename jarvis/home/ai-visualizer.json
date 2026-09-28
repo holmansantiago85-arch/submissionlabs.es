@@ -1,7 +1,7 @@
 {
   "name": "JARVIS",
   "badge": "",
-  "face": "board",
+  "face": "bridge",
   "port": 8790,
   "bus_dir": "__AGENT_HOME__/backtalk",
   "thinking_sound": true
