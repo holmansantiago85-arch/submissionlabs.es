@@ -17,13 +17,11 @@ This vault lives at `__VAULT_PATH__`. If you use Claude Desktop, claude.ai, or a
 
 ## Who I Am
 
-I'm James Holman. I live and work in the San Roque, Cádiz / Gibraltar area. I'm a professional rescue trainer and multi-disciplined instructor: RYA Powerboat Instructor, Day Skipper, former professional firefighter and EMT. I hold a Brazilian Jiu-Jitsu black belt in the Gordo Jiu-Jitsu Europe lineage. I run two companies across three brands: a martial arts academy and two maritime businesses. Two young children, a partner who runs operations alongside me, and post-divorce co-parenting logistics that need precise scheduling.
+I'm James Holman. I live and work in the San Roque, Cádiz / Gibraltar area. I'm a professional rescue trainer and multi-disciplined instructor: RYA Powerboat Instructor, Day Skipper, former professional firefighter and EMT. I hold a Brazilian Jiu-Jitsu black belt in the Gordo Jiu-Jitsu Europe lineage. I run two companies across three brands: a martial arts academy and two maritime businesses. Family and personal details live in [[Family]], which stays in this local vault only.
 
 ## Key People
 
-- **[[Madi]]** — my partner. Central to daily life; assists with business operations and family logistics.
-- **[[Archie]]** — my son, born 05/08/2020.
-- **[[Lucy]]** — my daughter, born 20/06/2023.
+People who matter to my work and life are listed in [[Family]] and in the business notes. Add anyone new there as you learn who they are and what they do for me.
 
 ## Submission Labs (02 - Submission Labs)
 
@@ -48,7 +46,7 @@ Second trading name of JJJH Soto Services S.L., tridentmaritimeacademy.com. Base
 02 - Submission Labs            ← The academy: classes, members, comms, marketing, Jobs
 03 - Trident Seas               ← Maritime operations and logistics
 04 - Trident Maritime Academy   ← Courses, students, training material, Jobs
-05 - Personal                   ← Family, co-parenting schedule, health, training
+05 - Personal                   ← Family, health, training
 06 - Archive                    ← Completed projects and old notes
 07 - Resources                  ← Cross-project reference material, templates, shared Jobs
   Marketing/                    ← Jared's marketing playbook; read before any marketing work
@@ -66,7 +64,7 @@ Firefighter and EMT before moving into rescue and maritime training. Competitive
 
 - Work and scheduling run on Spain time (CET/CEST).
 - Days split between the academy floor, the water in Sotogrande, and admin.
-- Kids' handovers and school runs are fixed points; everything else moves around them.
+- Family commitments are fixed points; everything else moves around them.
 
 ## My Preferences for Working with AI
 

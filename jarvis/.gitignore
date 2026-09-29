@@ -1,0 +1,4 @@
+
+# Personal data never goes in this repo
+private/
+*.private.md

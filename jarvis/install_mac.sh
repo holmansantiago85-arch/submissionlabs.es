@@ -229,6 +229,10 @@ if [ "$IS_MAC" = 1 ]; then
   mk "Update Jarvis"     "cd \"$AGENT_HOME/fullstack-agent\" && ./update.sh"
 fi
 
+# ---------------------------------------------------------------- jobs, connector policy, project folders
+say_step "Jobs, connector policy, project folders"
+AGENT_HOME="$AGENT_HOME" VAULT_PATH="$VAULT_PATH" "$HERE/apply_updates.sh" --keep-claude-md | grep -v '^$' | sed -n '2,9p'
+
 # ---------------------------------------------------------------- done
 cat <<TXT
 
@@ -245,7 +249,8 @@ Next, on the Mac:
   2. cd $AGENT_HOME && claude
        Jarvis boots from CLAUDE.md, reads the vault, and greets you.
   3. Double-click "Talk to Jarvis" on the Desktop for the voice and the face.
-       Hold HOME to talk. Say "goodbye Jarvis" to end.
+       Hold RIGHT OPTION to talk. Say "goodbye Jarvis" to end.
+  4. ./check_connectors.sh, then tell Jarvis: "Run the life briefing."
 
 Optional: ElevenLabs voice, or a full guided pass with Jared's wizard
 (it adopts everything above and rebuilds nothing):

@@ -5,7 +5,7 @@ type: index
 ---
 # Submission Labs
 
-Submission Labs S.L. (submissionlabs.es), San Roque. BJJ Gi and No-Gi, MMA, kids' programmes. Gordo Jiu-Jitsu Europe lineage. Motto "Usque Ad Mortem". James is Managing Director; [[Madi]] assists with operations.
+Submission Labs S.L. (submissionlabs.es), San Roque. BJJ Gi and No-Gi, MMA, kids' programmes. Gordo Jiu-Jitsu Europe lineage. Motto "Usque Ad Mortem". James is Managing Director.
 
 ## Notes in this folder
 - [[Academy Overview]] — what we offer, where, and the tools that run it

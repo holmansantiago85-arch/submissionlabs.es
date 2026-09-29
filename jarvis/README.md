@@ -18,12 +18,12 @@ Site and start page: https://jaredrhod.com . Discord: https://discord.gg/YSdsqMv
 
 Jared's wizard normally interviews you for 10 to 15 minutes. This folder holds the answers already written, so the Mac install is one script.
 
-- `home/CLAUDE.md`: Jarvis boot config. Jared's engine rules verbatim. Character: a sharp-witted British butler with a fire-crew past, dry and sardonic, calls you sir or boss, profanity on (one line turns it off). His own voice and the copy he drafts for you are kept separate: drafts follow your Writing Style Guide. Welcome line "Hello James, what are we working on today?". Your writing rules, Spain time, DD/MM/YYYY, bilingual output, the Trident Maritime Academy accreditation rule, co-parenting scheduling rule. Barehands board block and the "you are the mechanic" block.
-- `home/backtalk.json`: push to talk on HOME, ask-before-acting permissions, built-in British voice `bm_lewis`, vault in `extra_dirs`, barehands ring wired.
+- `home/CLAUDE.md`: Jarvis boot config. Jared's engine rules verbatim. Character: a sharp-witted British butler with a fire-crew past, dry and sardonic, calls you sir or boss, profanity on (one line turns it off). His own voice and the copy he drafts for you are kept separate: drafts follow your Writing Style Guide. Welcome line "Hello James, what are we working on today?". Your writing rules, Spain time, DD/MM/YYYY, bilingual output, the Trident Maritime Academy accreditation rule, family scheduling rule. Barehands board block and the "you are the mechanic" block.
+- `home/backtalk.json`: push to talk on Right Option, ask-before-acting permissions, built-in British voice `bm_lewis`, vault in `extra_dirs`, barehands ring wired.
 - `home/ai-visualizer.json`: default face is The Bridge (below), name JARVIS, bus pointed at backtalk.
 - `faces/bridge/`: a custom face for Jared's visualizer. One thin ring and a horizon line on near-black, Spain clock and DD/MM/YYYY date, the academy motto. Breathes at idle, amber when listening, segmented spin when thinking, pulses with the voice when speaking. Installed into `ai-visualizer/faces/` so it sits in the gallery beside Jared's four. Switch faces by changing `face` in the config: `bridge`, `board`, `radial`, `rain`, `neural`.
 - `home/barehands.json`: the vault as the Notes orb.
-- `vault/`: seeded Obsidian vault. VAULT-INDEX with your profile, key people (Madi, Archie, Lucy), three business folders (Submission Labs, Trident Seas, Trident Maritime Academy), Personal, Archive, Resources, Active Priorities, daily note template, folder indexes, and five starter Jobs: WhatsApp Front Desk, Social Content, Course Pack Review, Bilingual Draft, plus a Writing Style Guide.
+- `vault/`: seeded Obsidian vault. VAULT-INDEX with your profile, a private Family note (filled in locally, never in this repo), three business folders (Submission Labs, Trident Seas, Trident Maritime Academy), Personal, Archive, Resources, Active Priorities, daily note template, folder indexes, and five starter Jobs: WhatsApp Front Desk, Social Content, Course Pack Review, Bilingual Draft, plus a Writing Style Guide.
 - `vault/07 - Resources/Marketing/` and `Integrations Plan.md`: Jared's marketing playbook wired in as AI Priming (the agent reads the principles before any marketing work), and a phased plan for connecting Calendar, Gmail, WhatsApp, Metricool and the website the way Jared connects his services: read-only first, ask-first permissions, one policy note per service.
 - `install_mac.sh`: clones the six repos into `~/my-agent`, drops the files above in with real paths, creates the vault at `~/HQ`, installs Obsidian and registers the vault, runs backtalk's installer, writes Desktop shortcuts. Idempotent. Never overwrites anything that already exists.
 
@@ -43,6 +43,30 @@ Flags: `--no-voice` skips the 1 GB speech-model download (run backtalk's `instal
 
 Roughly 10 minutes, most of it the model download.
 
+## Talk key, connectors and your life (29/09/2026)
+
+**Talk key.** Jared's default is the Home key. Apple keyboards do not have one, so it looked like the voice was flaky. Right Option is now the default. If it still misbehaves:
+
+```bash
+./diagnose_talk.sh              # 20-second key test: says exactly what is wrong
+./talk_config.sh key right_cmd  # or any single character, f13..f19
+./talk_config.sh mode open      # hands-free instead of holding a key (headphones recommended)
+```
+
+No Input Monitoring permission is the most common cause: System Settings, Privacy & Security, Input Monitoring, add Terminal, then quit and reopen Terminal. Spoken alternative once it works: "go hands free" and "push to talk mode".
+
+**Connectors.** Gmail, Google Drive, Google Calendar and Dropbox come from your claude.ai account. Signed in to Claude Code with the same account, they appear as connectors in `/mcp` with no extra setup (source: https://code.claude.com/docs/en/mcp), and the voice line uses the same session settings. `./check_connectors.sh` shows what is live.
+
+Policy, written to `~/my-agent/.claude/settings.json`: search, read and summarise are silent; Gmail drafts are allowed; sending, replying, forwarding, deleting, trashing, sharing and editing are blocked outright; labels, creating files or events ask first. To allow sending later, remove the matching deny lines yourself. Jarvis is told never to widen its own access.
+
+**Jobs added to the vault:** Life Briefing (calendar, mail, Drive, projects into `Current Situation.md`), Inbox Triage, Drive Reader, Claude History Import. First thing to say once connected: "Run the life briefing."
+
+**Your Claude and projects.** Claude Code projects at `~/.claude/projects` and `~/submissionlabs.es` are readable by both sessions. Add more with `./link_projects.sh --scan` then `./link_projects.sh <folder>`. claude.ai chats and Projects have no live connection: Settings, Privacy, Export data, unzip into `~/HQ/00 - Inbox/claude-export/`, then say "import my Claude history".
+
+## Privacy
+
+This repository is public. Nothing about your family, mail, Drive or calendar belongs in it, and the vault seed here carries none: family details live only in your local vault, filled in by Jarvis. `private/` is git-ignored. Do not commit `~/HQ`.
+
 ## Updating an existing install
 
 After a `git pull` of this repo on the Mac:
@@ -57,7 +81,7 @@ Replaces CLAUDE.md (backup kept), installs any new faces, merges config keys whi
 
 1. System Settings, Privacy & Security: grant Terminal **Microphone** (prompted on first recording) and **Input Monitoring** (needed for the hold-to-talk key). Restart Terminal after adding Input Monitoring.
 2. `cd ~/my-agent && claude`. Jarvis boots from CLAUDE.md, reads the vault, greets you.
-3. Double-click **Talk to Jarvis** on the Desktop. The circuit board opens in the browser, Jarvis speaks the greeting. Hold HOME, talk, release. "Goodbye Jarvis" ends the session.
+3. Double-click **Talk to Jarvis** on the Desktop. The circuit board opens in the browser, Jarvis speaks the greeting. Hold Right Option, talk, release. "Goodbye Jarvis" ends the session.
 
 Desktop shortcuts written: Chat with Jarvis, Talk to Jarvis, Jarvis barehands, Update Jarvis. First double-click may ask permission; click Open.
 

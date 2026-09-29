@@ -10,7 +10,7 @@ How Jared runs his Jarvis (Substack, "Six Weeks With Jarvis", 07/2026): a dedica
 James's equivalent, in priority order. Each one becomes a Job note once wired.
 
 ## Phase 1: read-only, low risk
-- [ ] **Google Calendar** via Claude Code MCP. Family handovers, classes, courses. Read first; write only after the calendar names are confirmed.
+- [ ] **Google Calendar** via Claude Code MCP. Family commitments, classes, courses. Read first; write only after the calendar names are confirmed.
 - [ ] **Gmail** via Claude Code MCP. Triage and drafts only, no sending. Policy per inbox: academy enquiries, maritime clients, personal.
 - [ ] **Dropbox / Google Drive** for course packs and academy documents.
 
@@ -20,7 +20,7 @@ James's equivalent, in priority order. Each one becomes a Job note once wired.
 - [ ] **Supabase / website** health check for submissionlabs.es. Read-only monitoring first.
 
 ## Phase 3: always-on
-- [ ] Morning brief at a fixed time: calendar, inbox summary, open priorities, handovers today. Spoken through the voice line or written to the daily note.
+- [ ] Morning brief at a fixed time: calendar, inbox summary, open priorities, family commitments today. Spoken through the voice line or written to the daily note.
 - [ ] Inbox policies written as notes the agent reads before acting, one per inbox, as Jared does.
 
 ## Rules
